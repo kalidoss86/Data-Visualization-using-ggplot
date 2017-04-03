@@ -1,0 +1,112 @@
+---
+title: "DataScience Learning"
+author: "Kalidoss"
+date: "April 2, 2017"
+output: html_document
+---
+
+# Data Visualization using R ggplot
+
+Loading the packages required which has the some dataset we can use for visualization
+
+```{r}
+#install.packages("tidyverse")
+library(tidyverse)
+
+
+```
+
+Now, Just view the data in table format
+
+```{r}
+mpg
+
+summary(mpg)
+
+str(mpg)
+
+```
+
+Let's start with simple scatter plot
+```{r}
+ggplot(mpg, aes(x=displ, hwy) ) +
+  geom_point()
+```
+
+This plot shows that it has some negative correlation of mileage with respect to Engine size
+
+```{r}
+ggplot(mpg ) +
+  geom_point( aes(x=displ, y=hwy, color=class ))
+```
+
+Let us visualze in other way using size aesthetic instead of color
+```{r}
+ggplot(mpg ) +
+  geom_point( aes(x=displ, y=hwy, size=class ))
+```
+
+Other way of visualizing the plot such as alpha and shape
+
+```{r}
+ggplot(mpg ) +
+  geom_point( aes(x=displ, y=hwy, alpha=class ))
+ggplot(mpg ) +
+  geom_point( aes(x=displ, y=hwy, shape=class ))
+```
+
+Visualize the plot using Facets, Using this we can include additional varaible into the plot particularly categorical variables
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~class, nrow=2)
+```
+
+Facet plotting on the combination of two variables
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ cyl)
+```
+Not to facet on rows or column, use . instead of variable name as below
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+```
+## Using Geometric Objects in ggplot
+
+```{r}
+ggplot(data=mpg) +
+  geom_smooth(aes(x=displ, y=hwy))
+```
+
+
+Adding categorical varaible  (drv) in this plot, This categorical variable says that 
+ * 'f' - front-wheel drive
+ * 'r' - rear wheel drive
+ * '4' - four wheel drive
+
+```{r}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, linetype=drv ))
+```
+
+Same plot can be achieved using aesthetic parma 'group' instead of 'linetype'. But 'group' will not add Legend to the plot
+
+```{r}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, group=drv ))
+```
+
+Using Multiple geom object to the plot to create more meaning full visualization. 
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy )) + 
+  geom_smooth() +
+  geom_point()
+```
+
